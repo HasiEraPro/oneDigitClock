@@ -1,0 +1,7 @@
+{
+    "sketch": "oneDigitClock.ino",
+    "board": "arduino:avr:uno",
+    "output": ".\\bin",
+    "port": "COM8",
+    "programmer": "AVRISP mkII"
+}
