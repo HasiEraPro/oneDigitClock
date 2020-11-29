@@ -65,3 +65,6 @@ bin/preproc/ctags_target_for_gcc_minus_e.cpp
 bin/sketch/oneDigitClock.ino.cpp
 bin/sketch/oneDigitClock.ino.cpp.d
 bin/sketch/oneDigitClock.ino.cpp.o
+bkp.txt
+bin/libraries/RTClib/RTClib.cpp.d
+bin/libraries/RTClib/RTClib.cpp.o
