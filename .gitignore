@@ -68,3 +68,9 @@ bin/sketch/oneDigitClock.ino.cpp.o
 bkp.txt
 bin/libraries/RTClib/RTClib.cpp.d
 bin/libraries/RTClib/RTClib.cpp.o
+bin/libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.cpp.d
+bin/libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.cpp.o
+bin/libraries/Adafruit_NeoPixel/esp8266.c.o
+bin/libraries/LaserXSegment/LaserXSegment.cpp.d
+bin/libraries/Adafruit_NeoPixel/esp8266.c.d
+bin/libraries/LaserXSegment/LaserXSegment.cpp.o

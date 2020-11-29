@@ -2,11 +2,16 @@
 #include <LiquidCrystal_I2C.h>
 #include <ButtonDebounce.h>
 #include <RTClib.h>
+#include <LaserXSegment.h>
+
+
 byte lcdRows = 4;
 byte lcdColumns = 16;
 
-LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows); // set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_I2C lcd(0x20, lcdColumns, lcdRows); // set the LCD address to 0x27 for a 16 chars and 2 line display
 RTC_DS1307 RTC;
+LaserXSegment disp( 1, 12 );
+
 //////////////////Pins///////////
 uint8_t hourupg = 0;
 uint8_t  minupg = 0;
@@ -35,6 +40,16 @@ void setup()
 {
   Serial.begin(9600);
   lcd.init(); // initialize the lcd
+  Wire.begin();
+  RTC.begin();
+
+    if (! RTC.isrunning()) 
+    {
+    Serial.println("RTC is NOT running!");
+    // Set the date and time at compile time
+    //RTC.adjust(DateTime(__DATE__, __TIME__));
+    }
+
   lcd.backlight();
   lcd.setCursor(0, 0);
   
@@ -43,13 +58,14 @@ void setup()
   delay(1000);
  digitalWrite(led, LOW);
   lcd.print("=====Welcome====");
+
   
 }
 
 void loop()
 {
   updateButton();
-
+DisplayClock();
 if(Menubtn.state() == HIGH)
 {
   delay(10);
@@ -86,6 +102,7 @@ switch(menu)
   case 4:DisplaySetYear();break;
   case 5:DisplaySetMonth();break;
   case 6:DisplaySetDay();break;
+  case 7:DisplaySave();
   
   default: break;
 
@@ -129,7 +146,7 @@ while (hsFlag)
               Serial.println("hsFlag false");
               menu =2;
               Serial.print("menu:");Serial.println(menu);
-              welcomeMsgLcd();
+              
 
             }
 
@@ -318,7 +335,8 @@ lcd.print("Settings");
               Serial.println("clicked menu button inside am pm ");
               amPmFlag = false;
               menu = 3;
-              welcomeMsgLcd();
+              
+              
               
 
             }
@@ -350,7 +368,8 @@ lcd.print("Settings");
     {
 
       menu = 3;
-      welcomeMsgLcd();
+      
+      
     }
 
     
@@ -395,7 +414,8 @@ while (minFlag)
               Serial.println("minFlag false inside disp minute");
               menu =4;
               Serial.print("menu:");Serial.println(menu);
-              welcomeMsgLcd();
+             
+             
 
             }
 
@@ -469,7 +489,8 @@ while (yearFlag)
               Serial.println("yearFlagFlag false inside disp year");
               menu = 5;
               Serial.print("menu:");Serial.println(menu);
-              welcomeMsgLcd();
+             
+             
 
             }
 
@@ -541,7 +562,8 @@ while (monthFlag)
               Serial.println("monthFlag false inside disp month");
               menu = 6;
               Serial.print("menu:");Serial.println(menu);
-              welcomeMsgLcd();
+              
+              
 
             }
 
@@ -613,7 +635,8 @@ while (dayFlag )
               Serial.println("dayFlag false inside disp day");
               menu = 7;
               Serial.print("menu:");Serial.println(menu);
-              welcomeMsgLcd();
+              
+              
 
             }
 
@@ -661,4 +684,77 @@ while (dayFlag )
 
 }
 
+void DisplaySave()
+{
 
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("SAVING IN");
+  lcd.setCursor(0,1);
+  lcd.print("PROGRESS.....");
+  RTC.adjust(DateTime(yearupg,monthupg,dayupg,hourupg,minupg,0));
+  delay(200);
+  menu = 0;
+  
+  
+
+}
+
+void DisplayClock()
+{
+// We show the current date and time
+  DateTime now = RTC.now();
+
+  lcd.setCursor(0, 1);
+  lcd.print("Hour:");
+  if (now.hour()<=9)
+  {
+    lcd.print("0");
+  }
+  lcd.print (now.hour());
+  hourupg=now.hour();
+  lcd.print(":");
+  if (now.minute()<=9)
+  {
+    lcd.print("0");
+  }
+  lcd.print(now.minute(), DEC);
+  minupg=now.minute();
+  lcd.print(":");
+  if (now.second()<=9)
+  {
+    lcd.print("0");
+  }
+  lcd.print(now.second(), DEC);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Date: ");
+  lcd.setCursor(5, 0);
+  if (now.month()<=9)
+  {
+    lcd.print("0");
+  }
+  lcd.print(now.month(), DEC);
+  monthupg=now.month();
+  lcd.print("/");
+  if (now.day()<=9)
+  {
+    lcd.print("0");
+  }
+  lcd.print(now.day(), DEC);
+  dayupg=now.day();
+  lcd.print("/");
+  lcd.print(now.year(), DEC);
+  yearupg=now.year();
+
+
+
+}
+
+void DisplayInSegment()
+{
+
+
+
+
+}
